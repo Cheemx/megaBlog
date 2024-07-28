@@ -8,9 +8,8 @@ export class AuthService {
     constructor(){
         this.client
             .setEndpoint(conf.appwriteUrl)
-            .setProject(conf.appwriteProjectId)
-
-        this.account = new Account(this.client)
+            .setProject(conf.appwriteProjectId);
+        this.account = new Account(this.client);
     }
 
     async createAccount({email, password, name}) {
@@ -18,13 +17,14 @@ export class AuthService {
             const userAccount = await this.account.create(ID.unique(), email, password, name);
             if (userAccount) {
                 // call another method 
+                console.log(userAccount);
                 return this.login({email, password});
             } else {
-                return userAccount
+                console.log("Tera createAccount nahi chal raha");
+                return userAccount;
             }
         } catch (error) {
-            console.log("Appwrite service :: createAccount :: error", error);
-
+            throw error;
         }
     }
 
@@ -32,7 +32,7 @@ export class AuthService {
         try {
             return await this.account.createEmailPasswordSession(email, password);
         } catch (error) {
-            console.log("Appwrite service :: login :: error", error);
+            throw error;
         }
     }
 

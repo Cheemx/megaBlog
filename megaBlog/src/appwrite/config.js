@@ -9,14 +9,20 @@ export class Service{
     constructor() {
         this.client
             .setEndpoint(conf.appwriteUrl)
-            .setProject(conf.appwriteProjectId)
+            .setProject(conf.appwriteProjectId);
         
-            this.databases = new Databases(this.client);
-            this.bucket = new Storage(this.client);
+        this.databases = new Databases(this.client);
+        this.bucket = new Storage(this.client);
     }
 
-    async createPost({title, slug, content, featuredImage, status, userId}) {
+    async createPost({title, slug, content, featuredImage, status, userid}) {
         try {
+            if(!userid) {
+                throw new Error('User ID is mising');
+            }
+
+            console.log("Creating post with userid: ", userid);
+
             return await this.databases.createDocument(
                 conf.appwriteDbId, 
                 conf.appwriteCollectionId,
@@ -26,7 +32,7 @@ export class Service{
                     content,
                     featuredImage,
                     status,
-                    userId,
+                    userid,
                 } 
             )
         } catch (error) {
@@ -34,7 +40,7 @@ export class Service{
         }
     }
 
-    async updatePost(slug, {title, content, featuredImage, status, userId}){
+    async updatePost(slug, {title, content, featuredImage, status, userid}){
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDbId,
@@ -123,7 +129,7 @@ export class Service{
     getFilePreview(fileId) {
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
-            fileId,
+            fileId
         )
     }
 
