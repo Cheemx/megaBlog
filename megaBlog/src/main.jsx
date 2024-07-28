@@ -20,7 +20,7 @@ import AllPosts from './pages/AllPosts.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App />,  
     children: [
         {
             path: "/",
