@@ -19,8 +19,10 @@ function Login() {
             const session = await authService.login(data)
             if (session) {
                 const userData = await authService.getCurrentUser()
-                if(userData) dispatch(authLogin(userData));
-                navigate("/")
+                if(userData){ 
+                    dispatch(authLogin(userData));
+                    navigate("/")
+                }
             }
         } catch (error) {
             setError(error.message)
@@ -31,7 +33,7 @@ function Login() {
         className="flex items-center justify-center w-full"
         >
             <div
-            className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}
+            className={`mx-auto w-full max-w-lg bg-gray-500 rounded-xl p-10 border border-black/10`}
             >
                 <div className="mb-2 flex justify-center">
                     <span className="inline-block w-full max-w-[100px]">
